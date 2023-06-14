@@ -32,7 +32,7 @@ class CdsController {
         try {
             validate(req)
             let cdNovo = new cds(req.body)
-            return cdNovo.save(res.status(200).json({ message: `CD novo saldo! ID: ${cdNovo._id}` }))
+            return cdNovo.save(res.status(200).json({ message: `CD novo salvo! ID: ${cdNovo._id}` }))
 
         } catch (err) {
             return res.status(err.status).json(notFound(err))
