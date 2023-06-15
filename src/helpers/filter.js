@@ -1,7 +1,8 @@
+import bandas from "../models/Bandas.js";
 import cds from "../models/Cds.js";
-import { notFoundFilter, notFoundFilterCust } from "./errors.js";
+import { notFoundFilter} from "./errors.js";
 
-async function filtro(reqQuery) {
+async function filtroCd(reqQuery) {
     const { album, ano, banda } = reqQuery
     let resultadoFiltro = {}
     
@@ -26,4 +27,20 @@ async function filtro(reqQuery) {
     
   }
 
-  export default filtro
+  async function filtroBanda(reqQuery) {
+    const { banda } = reqQuery
+    let resultadoFiltro = {}
+      
+    if (banda){
+      resultadoFiltro = await bandas.find({'banda':{$regex: banda, $options: 'i'}})
+    }
+    
+    if(!banda){
+      return notFoundFilter()
+    }
+    
+    return {resultadoFiltro}
+    
+  }
+
+  export {filtroCd, filtroBanda}
