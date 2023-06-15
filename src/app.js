@@ -1,6 +1,5 @@
 import express from "express"
 import db from "./config/db.js"
-import cds from "./models/Cds.js"
 import routes from "./routes/index.js"
 
 db.on("error", console.log.bind(console, "Erro de conexão"))
