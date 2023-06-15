@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "8a29f11f-58c5-4658-9ff2-00f8933092ff",
+		"name": "cds-api",
+		"description": "É uma API de CRUD responsável pelo armazenamento de informações de coletâneas (cds)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27581508"
+	},
+	"item": [
+		{
+			"name": "listar cd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/cds",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cds"
+					]
+				},
+				"description": "Lista todos os CDs presentes no banco de dados"
+			},
+			"response": []
+		},
+		{
+			"name": "filtro cd",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/cds/filtro?ano=2004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cds",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "album",
+							"value": "Live in Texas",
+							"description": "Parametro para filtrar por album",
+							"disabled": true
+						},
+						{
+							"key": "ano",
+							"value": "2004",
+							"description": "Parametro para filtrar por ano"
+						},
+						{
+							"key": "banda",
+							"value": "avioes do forro",
+							"description": "Parametro para filtrar por banda",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Na rota de filtro, é possível fazer o filtro de 1 parâmetro por busca"
+			},
+			"response": []
+		},
+		{
+			"name": "inserir cd",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"album\": \"Kill them'll\",\r\n        \"banda\": \"Metallica\",\r\n        \"ano\": 1980\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/cds",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cds"
+					]
+				},
+				"description": "Nessa rota é possível inserir uma nova coletânea no banco de dados, desde que seja respeitado os parâmetros requiridos (album e banda no mínimo)"
+			},
+			"response": []
+		},
+		{
+			"name": "alterar cd",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ano\": 2005\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/cds/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cds",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "6489e1ccc09c6cedcb6d984e",
+							"description": "ID para localizar o cd a ser atualizado"
+						}
+					]
+				},
+				"description": "Rota responsável por editar as informações de uma coletânea através do ID passado"
+			},
+			"response": []
+		},
+		{
+			"name": "deletar cd",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/cds/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cds",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "6489e1ccc09c6cedcb6d984e",
+							"description": "ID para localizar o cd a ser deletado"
+						}
+					]
+				},
+				"description": "StartFragment\n\nRota responsável por deletar as informações de uma coletânea através do ID passado\n\nEndFragment"
+			},
+			"response": []
+		}
+	]
+}
