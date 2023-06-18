@@ -30,9 +30,13 @@ class CdsController {
 
     static cadastrarCds = async (req, res) => {
         try {
-            validate(req)
+            await validate(req)
+            await validateIdBanda(req.body.banda)
+
             let cdNovo = new cds(req.body)
-            return cdNovo.save(res.status(200).json({ message: `CD novo salvo! ID: ${cdNovo._id}` }))
+            cdNovo.save()
+            let confirmation = res.status(200).json({ message: `CD novo salvo! ID: ${cdNovo._id}` })
+            return confirmation
 
         } catch (err) {
             return res.status(err.status).json(notFound(err))
@@ -42,7 +46,7 @@ class CdsController {
     static atualizarCd = async (req, res) => {
         try {
             await validateIdCd(req.params.id)
-            await validateIdBanda(req.body.id)
+            await validateIdBanda(req.body.banda)
             const id = req.params.id
             const updateInfo = req.body
 

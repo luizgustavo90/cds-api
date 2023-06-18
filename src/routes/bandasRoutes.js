@@ -8,6 +8,7 @@ router.get("/bandas/filtro", BandasController.filtroBandas)
 router.post("/bandas", BandasController.cadastrarBandas)
 router.put("/bandas/:id", BandasController.atualizarBanda)
 router.delete("/bandas/:id", BandasController.deletarBanda)
-router.delete("/bandas/integrante/:id", BandasController.deletarIntegrante)
+router.delete("/bandas/integrante/:idBanda/:idIntegrante", BandasController.deletarIntegrante)
+router.post ("/bandas/integrante/:idBanda/:nomeIntegrante", BandasController.inserirIntegrante)
 
 export default router

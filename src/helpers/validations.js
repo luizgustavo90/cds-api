@@ -1,3 +1,4 @@
+import bandas from "../models/Bandas.js"
 import cds from "../models/Cds.js"
 import mongoose from "mongoose"
 
@@ -16,7 +17,7 @@ function validate(req) {
         error = {
             status: 404,
             message: "BANDA não encontrada",
-            detail: "Falha ao cadastrar CD: a BANDA não está preenchida, informação faltando"
+            detail: "Falha ao cadastrar CD: por favor insira um ID válido de BANDA"
         }
         console.log("error", error)
         throw error
@@ -60,7 +61,7 @@ async function validateIdBanda(id) {
         }
         throw error
     }
-    const buscaId = await cds.findById(id)
+    const buscaId = await bandas.findById(id)
     if (!buscaId) {
         error = {
             status: 404,
