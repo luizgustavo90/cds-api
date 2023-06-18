@@ -1,3 +1,4 @@
+import bandas from "../models/Bandas.js"
 import cds from "../models/Cds.js"
 import mongoose from "mongoose"
 
@@ -16,7 +17,7 @@ function validate(req) {
         error = {
             status: 404,
             message: "BANDA não encontrada",
-            detail: "Falha ao cadastrar CD: a BANDA não está preenchida, informação faltando"
+            detail: "Falha ao cadastrar CD: por favor insira um ID válido de BANDA"
         }
         console.log("error", error)
         throw error
@@ -24,7 +25,7 @@ function validate(req) {
 
 }
 
-async function validateId(id) {
+async function validateIdCd(id) {
     var checkId = mongoose.Types.ObjectId.isValid(id)
     let error = {}
 
@@ -32,7 +33,7 @@ async function validateId(id) {
         error = {
             status: 404,
             message: "ID não encontrado",
-            detail: "Falha ao alterar/deletar CD: o ID não foi encontrado"
+            detail: "Falha ao alterar/deletar CD: o ID do CD não foi encontrado"
         }
         throw error
     }
@@ -41,11 +42,35 @@ async function validateId(id) {
         error = {
             status: 404,
             message: "ID não encontrado",
-            detail: "Falha ao alterar/deletar CD: o ID não foi encontrado"
+            detail: "Falha ao alterar/deletar CD: o ID do CD não foi encontrado"
         }
         throw error
     }
 
 }
 
-export { validate, validateId }
+async function validateIdBanda(id) {
+    var checkId = mongoose.Types.ObjectId.isValid(id)
+    let error = {}
+
+    if (!checkId) {
+        error = {
+            status: 404,
+            message: "ID não encontrado",
+            detail: "Falha ao inserir/alterar/deletar BANDA: o ID da BANDA não foi encontrado"
+        }
+        throw error
+    }
+    const buscaId = await bandas.findById(id)
+    if (!buscaId) {
+        error = {
+            status: 404,
+            message: "ID não encontrado",
+            detail: "Falha ao inserir/alterar/deletar BANDA: o ID da BANDA não foi encontrado"
+        }
+        throw error
+    }
+
+}
+
+export { validate, validateIdCd, validateIdBanda }

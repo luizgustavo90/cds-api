@@ -1,12 +1,12 @@
 import cds from '../models/Cds.js'
-import filtro from '../helpers/filter.js'
-import { validate, validateId } from '../helpers/validations.js'
+import {filtroCd} from '../helpers/filter.js'
+import { validate, validateIdBanda, validateIdCd } from '../helpers/validations.js'
 import { notFound } from '../helpers/errors.js'
 
 class CdsController {
     static listarCds = async (req, res) => {
         try {
-            const cdsResultado = await cds.find()
+            const cdsResultado = await cds.find().populate('banda').exec()
             const resultadoBusca = res.status(200).json(cdsResultado)
             return resultadoBusca
 
@@ -18,7 +18,7 @@ class CdsController {
 
     static filtroCds = async (req, res) => {
         try {
-            let retornoFiltro = await filtro(req.query)
+            let retornoFiltro = await filtroCd(req.query)
             let resultadoFiltro = res.status(200).json(retornoFiltro)
             return resultadoFiltro
 
@@ -30,9 +30,13 @@ class CdsController {
 
     static cadastrarCds = async (req, res) => {
         try {
-            validate(req)
+            await validate(req)
+            await validateIdBanda(req.body.banda)
+
             let cdNovo = new cds(req.body)
-            return cdNovo.save(res.status(200).json({ message: `CD novo salvo! ID: ${cdNovo._id}` }))
+            cdNovo.save()
+            let confirmation = res.status(200).json({ message: `CD novo salvo! ID: ${cdNovo._id}` })
+            return confirmation
 
         } catch (err) {
             return res.status(err.status).json(notFound(err))
@@ -41,7 +45,8 @@ class CdsController {
 
     static atualizarCd = async (req, res) => {
         try {
-            await validateId(req.params.id)
+            await validateIdCd(req.params.id)
+            await validateIdBanda(req.body.banda)
             const id = req.params.id
             const updateInfo = req.body
 
@@ -56,7 +61,7 @@ class CdsController {
 
     static deletarCd = async (req, res) => {
         try {
-            await validateId(req.params.id)
+            await validateIdCd(req.params.id)
             const id = req.params.id
 
             await cds.findByIdAndDelete(id).exec()
