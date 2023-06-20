@@ -10,7 +10,6 @@ class BandasController {
             const resultadoBusca = res.status(200).json(bandasResultado)
             return resultadoBusca
 
-
         } catch (err) {
             return res.status(err.status).json(notFound(err))
         }
