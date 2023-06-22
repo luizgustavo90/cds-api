@@ -1,40 +1,43 @@
 import bandas from '../models/Bandas.js'
 import { filtroBanda } from '../helpers/filter.js'
-import { notFound } from '../helpers/errors.js'
 import { validateIdBanda } from '../helpers/validations.js'
+import {returnModel, returnModelErr} from '../helpers/return.js'
 
 class BandasController {
     static listarBandas = async (req, res) => {
         try {
             const bandasResultado = await bandas.find()
-            const resultadoBusca = res.status(200).json(bandasResultado)
-            return resultadoBusca
-
+            const type = "success"
+            return returnModel(res,type,bandasResultado)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
     }
 
     static filtroBandas = async (req, res) => {
         try {
             let retornoFiltro = await filtroBanda(req.query)
-            let resultadoFiltro = res.status(200).json(retornoFiltro)
-            return resultadoFiltro
+            const type = "success"
+            return returnModel(res,type,retornoFiltro)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
 
     }
 
     static cadastrarBandas = async (req, res) => {
         try {
-            let cdNovo = new bandas(req.body)
-            return cdNovo.save(res.status(200).json({ message: `Banda nova salvo! ID: ${cdNovo._id}` }))
+            let bandaNova = new bandas(req.body)
+            bandaNova.save()
+            const type = "success-message"
+            const mensagem = `Banda nova salvo! ID: ${bandaNova._id}`
+            const params = ''
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
     }
 
@@ -45,11 +48,13 @@ class BandasController {
             const updateInfo = req.body
 
             await bandas.findByIdAndUpdate(id, updateInfo).exec()
-            const confirmation = res.status(200).json({ message: `Banda de Id: ${id} atualizado!` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `Banda de Id: ${id} atualizado!`
+            const params = ''
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
     }
 
@@ -59,22 +64,23 @@ class BandasController {
             const id = req.params.id
 
             await bandas.findByIdAndDelete(id).exec()
-            const confirmation = res.status(200).json({ message: `Banda removida com sucesso!` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `Banda removida com sucesso!`
+            const params = ''
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+           return returnModelErr(res,err)
 
         }
     }
 
     static deletarIntegrante = async (req, res) => {
         try {
-            validateIdBanda(req.params.idBanda)
+            await validateIdBanda(req.params.idBanda)
 
             const idBanda = req.params.idBanda
             const idIntegrante = req.params.idIntegrante
-            console.log("banda,integrante --", idBanda, idIntegrante)
 
             await bandas.findOneAndUpdate(
                 { _id: idBanda },
@@ -82,11 +88,14 @@ class BandasController {
                 { safe: true, multi: false }
               );
 
-            const confirmation = res.status(200).json({ message: `Integrante de ID ${idIntegrante} removido com sucesso!` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `Integrante de ID ${idIntegrante} removido com sucesso!`
+            const params = ''
+
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
 
         }
 
@@ -94,7 +103,7 @@ class BandasController {
 
     static inserirIntegrante = async (req,res) => {
         try {
-            validateIdBanda(req.params.idBanda)
+            await validateIdBanda(req.params.idBanda)
 
             const idBanda = req.params.idBanda
             const nomeIntegrante = req.params.nomeIntegrante
@@ -104,11 +113,14 @@ class BandasController {
                 { $push: { integrantes: { nome: nomeIntegrante } } },
               );
 
-            const confirmation = res.status(200).json({ message: `Integrante ${nomeIntegrante} foi adicionado na BANDA com sucesso!` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `Integrante ${nomeIntegrante} foi adicionado na BANDA com sucesso!`
+            const params = ''
+
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
 
         } 
     }

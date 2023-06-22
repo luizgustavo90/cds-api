@@ -7,22 +7,22 @@ async function filtroCd(reqQuery) {
     let resultadoFiltro = {}
     
     if (album) {
-     resultadoFiltro = await cds.find({'album': {$regex: album, $options: 'i'}})
+     resultadoFiltro = await cds.find({'album': {$regex: album, $options: 'i'}}).populate('banda').exec()
     }    
     
-    else if (ano) {
+    if (ano) {
         let anoNum = Number(ano)
-        resultadoFiltro = await cds.find({'ano':anoNum})
+        resultadoFiltro = await cds.find({'ano':anoNum}).populate('banda').exec()
     }
     
-    else if (banda){
-      resultadoFiltro = await cds.find({'banda':{$regex: banda, $options: 'i'}})
+    if (banda){
+      let idbanda = await bandas.find({'banda':{$regex: banda, $options: 'i'}})
+      resultadoFiltro = await cds.find({'banda':idbanda[0]._id}).populate('banda').exec()
     }
     
     if(!banda && !ano && !album){
       return notFoundFilter()
     }
-    
     return {resultadoFiltro}
     
   }
