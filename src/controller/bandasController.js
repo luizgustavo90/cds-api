@@ -34,7 +34,6 @@ class BandasController {
             const type = "success-message"
             const mensagem = `Banda nova salvo! ID: ${bandaNova._id}`
             const params = ''
-            console.log(mensagem)
             return returnModel(res,type,params,mensagem)
 
         } catch (err) {
