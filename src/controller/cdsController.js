@@ -1,29 +1,29 @@
 import cds from '../models/Cds.js'
 import {filtroCd} from '../helpers/filter.js'
 import { validate, validateIdBanda, validateIdCd } from '../helpers/validations.js'
-import { notFound } from '../helpers/errors.js'
+import {returnModel, returnModelErr} from '../helpers/return.js'
 
 class CdsController {
     static listarCds = async (req, res) => {
         try {
             const cdsResultado = await cds.find().populate('banda').exec()
-            const resultadoBusca = res.status(200).json(cdsResultado)
-            return resultadoBusca
+            const type = "success"
+            return returnModel(res,type,cdsResultado)
 
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
     }
 
     static filtroCds = async (req, res) => {
         try {
             let retornoFiltro = await filtroCd(req.query)
-            let resultadoFiltro = res.status(200).json(retornoFiltro)
-            return resultadoFiltro
+            const type = "success"
+            return returnModel(res,type,retornoFiltro)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
 
     }
@@ -35,11 +35,13 @@ class CdsController {
 
             let cdNovo = new cds(req.body)
             cdNovo.save()
-            let confirmation = res.status(200).json({ message: `CD novo salvo! ID: ${cdNovo._id}` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `CD novo salvo! ID: ${cdNovo._id}` 
+            const params = ''
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
     }
 
@@ -51,11 +53,13 @@ class CdsController {
             const updateInfo = req.body
 
             await cds.findByIdAndUpdate(id, updateInfo).exec()
-            const confirmation = res.status(200).json({ message: `CD de Id: ${id} atualizado!` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `CD de Id: ${id} atualizado!`
+            const params = ''
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr (res,err)
         }
     }
 
@@ -65,11 +69,13 @@ class CdsController {
             const id = req.params.id
 
             await cds.findByIdAndDelete(id).exec()
-            const confirmation = res.status(200).json({ message: `CD removido com sucesso!` })
-            return confirmation
+            const type = "success-message"
+            const mensagem = `CD removido com sucesso!`
+            const params = ''
+            return returnModel(res,type,params,mensagem)
 
         } catch (err) {
-            return res.status(err.status).json(notFound(err))
+            return returnModelErr(res,err)
 
         }
     }
