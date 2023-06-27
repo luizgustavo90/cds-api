@@ -1,11 +1,12 @@
 import bandas from '../models/Bandas.js'
 import { filtroBanda } from '../helpers/filter.js'
-import { validateIdBanda } from '../helpers/validations.js'
+import { validateIdBanda, tokenValidation } from '../helpers/validations.js'
 import {returnModel, returnModelErr} from '../helpers/return.js'
 
 class BandasController {
     static listarBandas = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             const bandasResultado = await bandas.find()
             const type = "success"
             return returnModel(res,type,bandasResultado)
@@ -17,6 +18,7 @@ class BandasController {
 
     static filtroBandas = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             let retornoFiltro = await filtroBanda(req.query)
             const type = "success"
             return returnModel(res,type,retornoFiltro)
@@ -29,6 +31,7 @@ class BandasController {
 
     static cadastrarBandas = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             let bandaNova = new bandas(req.body)
             bandaNova.save()
             const type = "success-message"
@@ -43,6 +46,7 @@ class BandasController {
 
     static atualizarBanda = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             await validateIdBanda(req.params.id)
             const id = req.params.id
             const updateInfo = req.body
@@ -60,6 +64,7 @@ class BandasController {
 
     static deletarBanda = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             await validateIdBanda(req.params.id)
             const id = req.params.id
 
@@ -77,8 +82,9 @@ class BandasController {
 
     static deletarIntegrante = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             await validateIdBanda(req.params.idBanda)
-
+            
             const idBanda = req.params.idBanda
             const idIntegrante = req.params.idIntegrante
 
@@ -103,6 +109,7 @@ class BandasController {
 
     static inserirIntegrante = async (req,res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             await validateIdBanda(req.params.idBanda)
 
             const idBanda = req.params.idBanda
