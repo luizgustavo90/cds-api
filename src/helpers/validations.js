@@ -1,6 +1,7 @@
 import bandas from "../models/Bandas.js"
 import cds from "../models/Cds.js"
 import mongoose from "mongoose"
+import { tokenRegistered } from "./tokenJwt.js"
 
 function validate(req) {
     let error = {}
@@ -20,6 +21,32 @@ function validate(req) {
             detail: "Falha ao cadastrar CD: por favor insira um ID válido de BANDA"
         }
         console.log("error", error)
+        throw error
+    }
+
+}
+
+async function tokenValidation(token) {    
+    let error = {}
+
+    if (!token) {
+        error = {
+            status: 401,
+            message: "Token näo fornecido",
+            detail: "O Token näo foi fornecido"
+        }
+        throw error
+
+    }
+
+    let tokenWitBearer = token.replace(/^Bearer\s+/, "");
+
+    if (tokenWitBearer != tokenRegistered) {
+        error = {
+            status: 401,
+            message: "Token inválido",
+            detail: "O Token fornecido está inválido"
+        }
         throw error
     }
 
@@ -73,4 +100,4 @@ async function validateIdBanda(id) {
 
 }
 
-export { validate, validateIdCd, validateIdBanda }
+export { validate, tokenValidation, validateIdCd, validateIdBanda }

@@ -1,9 +1,10 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import BandasController from "../controller/bandasController";
 import bandas from "../models/Bandas";
-jest.useFakeTimers();
+
 
 describe("bandasController", () => {
+    jest.useFakeTimers();
     let sut = BandasController;
 
     it("Deve retonar a lista de bandas", async () => {
@@ -11,14 +12,14 @@ describe("bandasController", () => {
         const retornoBanco = [
             {
                 _id: "648f197dcfc4984f5fe9813a",
-                banda: "xuxa",
+                banda: "banda 1",
                 integrantes: [
                     {
                         nome: "ela mesma",
                         _id: "648f197dcfc4984f5fe9813b",
                     },
                     {
-                        nome: "tia da xuxa de novo",
+                        nome: "outro integrante",
                         _id: "648f19e4cfc4984f5fe9816a",
                     },
                 ],
@@ -54,7 +55,7 @@ describe("bandasController", () => {
                         _id: "648f197dcfc4984f5fe9813b",
                     },
                     {
-                        nome: "tia da xuxa de novo",
+                        nome: "outro integrante",
                         _id: "648f19e4cfc4984f5fe9816a",
                     },
                     {

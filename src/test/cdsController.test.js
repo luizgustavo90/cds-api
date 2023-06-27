@@ -1,9 +1,9 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import CdsController from "../controller/cdsController";
 import cds from "../models/Cds";
-jest.useFakeTimers();
 
 describe("cdsController", () => {
+    jest.useFakeTimers();
     let sut = CdsController
 
     it("Deve retonar a lista de cds", async () => {
