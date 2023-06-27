@@ -1,11 +1,12 @@
 import cds from '../models/Cds.js'
 import {filtroCd} from '../helpers/filter.js'
-import { validate, validateIdBanda, validateIdCd } from '../helpers/validations.js'
+import { validate, validateIdBanda, validateIdCd, tokenValidation } from '../helpers/validations.js'
 import {returnModel, returnModelErr} from '../helpers/return.js'
 
 class CdsController {
     static listarCds = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             const cdsResultado = await cds.find().populate('banda').exec()
             const type = "success"
             return returnModel(res,type,cdsResultado)
@@ -18,6 +19,7 @@ class CdsController {
 
     static filtroCds = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             let retornoFiltro = await filtroCd(req.query)
             const type = "success"
             return returnModel(res,type,retornoFiltro)
@@ -30,7 +32,8 @@ class CdsController {
 
     static cadastrarCds = async (req, res) => {
         try {
-            await validate(req)
+            await tokenValidation(req.headers.authorization)
+            validate(req)
             await validateIdBanda(req.body.banda)
 
             let cdNovo = new cds(req.body)
@@ -47,6 +50,7 @@ class CdsController {
 
     static atualizarCd = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             await validateIdCd(req.params.id)
             await validateIdBanda(req.body.banda)
             const id = req.params.id
@@ -65,6 +69,7 @@ class CdsController {
 
     static deletarCd = async (req, res) => {
         try {
+            await tokenValidation(req.headers.authorization)
             await validateIdCd(req.params.id)
             const id = req.params.id
 

@@ -7,7 +7,6 @@ async function returnModel (res,type,param,mensagem) {
         case "success":
             return res.status(200).json(param)
         case "success-message":    
-            console.log(mensagem)
             return res.status(200).json({message: mensagem})
     }
   }
@@ -16,4 +15,8 @@ async function returnModel (res,type,param,mensagem) {
     return res.status(err.status).json(notFound(err))
  } 
 
- export {returnModel, returnModelErr}
+ async function returnModelToken(res,token){
+    return res.status(200).json({token})
+ }
+
+ export {returnModel, returnModelErr, returnModelToken}
