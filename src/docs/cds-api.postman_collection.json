@@ -3,175 +3,348 @@
 		"_postman_id": "8a29f11f-58c5-4658-9ff2-00f8933092ff",
 		"name": "cds-api",
 		"description": "É uma API de CRUD responsável pelo armazenamento de informações de coletâneas (cds)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "27581508"
 	},
 	"item": [
 		{
-			"name": "listar cd",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/cds",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"cds"
-					]
-				},
-				"description": "Lista todos os CDs presentes no banco de dados"
-			},
-			"response": []
-		},
-		{
-			"name": "filtro cd",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/cds/filtro?ano=2004",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"cds",
-						"filtro"
-					],
-					"query": [
-						{
-							"key": "album",
-							"value": "Live in Texas",
-							"description": "Parametro para filtrar por album",
-							"disabled": true
+			"name": "auth",
+			"item": [
+				{
+					"name": "autenticar usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Jubileu\",\r\n    \"departamento\": \"area comercial\",\r\n    \"ra\": 153262\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "ano",
-							"value": "2004",
-							"description": "Parametro para filtrar por ano"
+						"url": "http://localhost:3000/auth",
+						"description": "Cria um token jwt para o usuário ter acesso a todas as rotas da aplicação. O token é criado conforme informações providenciadas pelo usuário: nome, departamento e ra."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cds",
+			"item": [
+				{
+					"name": "listar cds",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "banda",
-							"value": "avioes do forro",
-							"description": "Parametro para filtrar por banda",
-							"disabled": true
-						}
-					]
+						"url": "http://localhost:3000/cds",
+						"description": "Lista todos os CDs presentes no banco de dados"
+					},
+					"response": []
 				},
-				"description": "Na rota de filtro, é possível fazer o filtro de 1 parâmetro por busca"
-			},
-			"response": []
+				{
+					"name": "filtro cd",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cds/filtro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cds",
+								"filtro"
+							],
+							"query": [
+								{
+									"key": "album",
+									"value": "Live",
+									"description": "Parametro para filtrar por album",
+									"disabled": true
+								},
+								{
+									"key": "ano",
+									"value": "2003",
+									"description": "Parametro para filtrar por ano",
+									"disabled": true
+								},
+								{
+									"key": "banda",
+									"value": "met",
+									"description": "Parametro para filtrar por banda",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Na rota de filtro, é possível fazer o filtro de 1 parâmetro por busca"
+					},
+					"response": []
+				},
+				{
+					"name": "inserir cd",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"banda\": \"baroes da pisadinha\",\r\n    \"album\": \"forró dez\",\r\n     \"ano\": 1980\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/cds",
+						"description": "Nessa rota é possível inserir uma nova coletânea no banco de dados, desde que seja respeitado os parâmetros requiridos (album e banda no mínimo)"
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar cd",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"banda\": \"648b8769ec3c6aba59a041b6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cds/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cds",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6489d077cee71c3cc31f7cb0",
+									"description": "ID para localizar o cd a ser atualizado"
+								}
+							]
+						},
+						"description": "Rota responsável por editar as informações de uma coletânea através do ID passado"
+					},
+					"response": []
+				},
+				{
+					"name": "deletar cd",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cds/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cds",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6489fb4bba7b0ee4f250",
+									"description": "ID para localizar o cd a ser deletado"
+								}
+							]
+						},
+						"description": "Rota responsável por deletar as informações de uma coletânea através do ID passado"
+					},
+					"response": []
+				}
+			],
+			"description": "Rotas específicas dos cds"
 		},
 		{
-			"name": "inserir cd",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "    {\r\n        \"album\": \"Kill them'll\",\r\n        \"banda\": \"Metallica\",\r\n        \"ano\": 1980\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+			"name": "bandas",
+			"item": [
+				{
+					"name": "listar bandas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/bandas",
+						"description": "Lista todas as bandas"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/cds",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"cds"
-					]
+				{
+					"name": "filtro banda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bandas/filtro?banda=Metallica",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bandas",
+								"filtro"
+							],
+							"query": [
+								{
+									"key": "banda",
+									"value": "Metallica"
+								}
+							]
+						},
+						"description": "Filtra a lista de bandas conforme parãmetro passado"
+					},
+					"response": []
 				},
-				"description": "Nessa rota é possível inserir uma nova coletânea no banco de dados, desde que seja respeitado os parâmetros requiridos (album e banda no mínimo)"
-			},
-			"response": []
-		},
-		{
-			"name": "alterar cd",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"ano\": 2005\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+				{
+					"name": "inserir banda",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"banda\": \"Linkin Park\",\r\n    \"integrantes\": [\r\n        {\r\n            \"nome\": \"Chester Bennington\"\r\n        },\r\n        {\r\n            \"nome\": \"Mike Shinoda\"\r\n        },\r\n        {\r\n            \"nome\": \"Joe Hahn\"\r\n        },\r\n        {\r\n            \"nome\": \"Rob Bourton \"\r\n        },\r\n        {\r\n            \"nome\": \"Dave Farrel\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/bandas",
+						"description": "Inseri uma banda na base"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/cds/:id",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"cds",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "6489e1ccc09c6cedcb6d984e",
-							"description": "ID para localizar o cd a ser atualizado"
-						}
-					]
+				{
+					"name": "atualizar banda",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"banda\": \"Metallica\",\r\n    \"integrantes\": [\r\n        {\r\n            \"nome\": \"James Hetfield\"\r\n        },\r\n        {\r\n            \"nome\": \"Kirk Hammet\"\r\n        },\r\n        {\r\n            \"nome\": \"Robert Trujillo\"\r\n        },\r\n        {\r\n            \"nome\": \"Lars Ulrich\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/bandas/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bandas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "648b71517c1f9c8d9b2b1d0f"
+								}
+							]
+						},
+						"description": "Atualiza a banda inteira conforme Id passado"
+					},
+					"response": []
 				},
-				"description": "Rota responsável por editar as informações de uma coletânea através do ID passado"
-			},
-			"response": []
-		},
-		{
-			"name": "deletar cd",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/cds/:id",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"cds",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "6489e1ccc09c6cedcb6d984e",
-							"description": "ID para localizar o cd a ser deletado"
-						}
-					]
+				{
+					"name": "deletar banda",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bandas/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bandas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "648b71517c1f9c8d9b2"
+								}
+							]
+						},
+						"description": "Deleta a banda conforme id passado"
+					},
+					"response": []
 				},
-				"description": "StartFragment\n\nRota responsável por deletar as informações de uma coletânea através do ID passado\n\nEndFragment"
-			},
-			"response": []
+				{
+					"name": "deletar integrante",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bandas/integrante/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bandas",
+								"integrante",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "648b7365fb201251ae128e91"
+								}
+							]
+						},
+						"description": "Através do id fornecido, é possível deletar um integrante da banda"
+					},
+					"response": []
+				},
+				{
+					"name": "inserir integrante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "Através do id da Banda passada e o nome a ser inserido, é possivel adicionar um integrante a banda"
+					},
+					"response": []
+				}
+			],
+			"description": "Rotas específicas das bandas"
 		}
 	]
 }
